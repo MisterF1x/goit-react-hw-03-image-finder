@@ -82,7 +82,7 @@ export class App extends Component {
   };
 
   render() {
-    const { images, isLoading, total, showModal } = this.state;
+    const { images, isLoading, total, showModal, url, alt } = this.state;
     const isLoadBtn = !!(total > images.length && !isLoading);
     return (
       <Layout>
@@ -96,7 +96,7 @@ export class App extends Component {
 
         {showModal && (
           <Modal onClose={this.closeModal}>
-            <img src={this.state.url} alt={this.state.alt} />
+            <img src={url} alt={alt} />
           </Modal>
         )}
         <Toaster position="top-right" />
