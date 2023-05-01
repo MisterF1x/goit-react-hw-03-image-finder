@@ -9,24 +9,19 @@ import {
 import { Formik } from 'formik';
 import toast from 'react-hot-toast';
 import PropTypes from 'prop-types';
+import { ERROR_MSG, toastErrStyle } from 'components/constant';
 
 export class Searchbar extends Component {
   static propTypes = {
     onSubmit: PropTypes.func.isRequired,
+    isSubmitting: PropTypes.bool.isRequired,
+    initial: PropTypes.string.isRequired,
   };
 
-  state = {
-    query: '',
-  };
   handleFormSubmit = ({ query }, { resetForm }) => {
     const trimedQuery = query.trim();
     if (!trimedQuery) {
-      return toast.error('This field is required and cannot be empty', {
-        style: {
-          background: '#FA9884',
-          color: '#fff',
-        },
-      });
+      return toast.error(ERROR_MSG['empty'], toastErrStyle);
     }
     resetForm();
     this.props.onSubmit(query);
@@ -34,7 +29,10 @@ export class Searchbar extends Component {
   render() {
     return (
       <SearchHead>
-        <Formik initialValues={this.state} onSubmit={this.handleFormSubmit}>
+        <Formik
+          initialValues={{ query: this.props.initial }}
+          onSubmit={this.handleFormSubmit}
+        >
           <FormSearch>
             <SearchFormBtn type="submit" disabled={this.props.isSubmitting}>
               <SearchFormLabel>Search</SearchFormLabel>

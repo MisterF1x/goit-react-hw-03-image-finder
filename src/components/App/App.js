@@ -9,6 +9,7 @@ import { ImageGallery } from 'components/ImageGallery/ImageGalery';
 import { LoadButton } from 'components/Button/Button';
 import toast, { Toaster } from 'react-hot-toast';
 import { Modal } from 'components/Modal/Modal';
+import { ERROR_MSG, toastErrStyle } from 'components/constant';
 
 export class App extends Component {
   state = {
@@ -36,12 +37,7 @@ export class App extends Component {
       this.setState({ isLoading: true });
       const { hits, totalHits } = await fetchImages(query, page, perPage);
       if (!hits.length) {
-        toast.error('The request is invalid please try again', {
-          style: {
-            background: '#FA9884',
-            color: '#fff',
-          },
-        });
+        toast.error(ERROR_MSG['msg'], toastErrStyle);
       }
       this.setState(({ images }) => ({
         query,
@@ -82,11 +78,12 @@ export class App extends Component {
   };
 
   render() {
-    const { images, isLoading, total, showModal, url, alt } = this.state;
+    const { query, images, isLoading, total, showModal, url, alt } = this.state;
     const isLoadBtn = !!(total > images.length && !isLoading);
     return (
       <Layout>
         <Searchbar
+          initial={query}
           onSubmit={this.handleSubmit}
           isSubmitting={isLoading}
         ></Searchbar>
